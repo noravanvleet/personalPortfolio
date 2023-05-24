@@ -1,14 +1,26 @@
-const express = require('express');
-const app = express();
+const routerBuilder = require('./router')
+const express = require('express')
+const app = express()
+const cors = require('cors')
+const port = process.env.PORT ? process.env.PORT : 3333
+const path = require('path')
+const bodyParser = require('body-parser')
+const router = require('./router')
 
-// Define routes and middleware here
+app.use(
+    express.static(path.join(__dirname, '/public')),
+    bodyParser.urlencoded({extended: false}),
+    bodyParser.json(),
+    express.json(),
+    cors()
+)
 
-// Start the server
-const port = 3333;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
-
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html'); // Replace the file path as needed
-  });
+routerBuilder.buildRouter()
+    .then(router => {
+        app.use('/', router)
+        app.listen(port, () => {
+            console.log(`Nora's Portfolio app listening at http://localhost:${port}`)
+        });
+    }).catch((err) => {
+    console.error(err)
+})
