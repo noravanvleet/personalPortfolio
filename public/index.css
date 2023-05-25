@@ -7,3 +7,9 @@
     background-color: #D25380;
     color: #FFFAF4;
 }
+
+#portfolioImage {
+    padding: 5px;
+    width: 20%;
+    height: 20%;
+}
